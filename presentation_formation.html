@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprendre le Sol pour Mieux Produire</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brun:    #2C1A0E;
+    --terre:   #5C3A1E;
+    --ocre:    #A0632A;
+    --sable:   #D4AA70;
+    --beige:   #F5EDD8;
+    --vert:    #4A6741;
+    --vert-cl: #7A9E6D;
+    --blanc:   #FDFAF4;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--blanc);
+    color: var(--brun);
+    line-height: 1.6;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--brun);
+    color: var(--beige);
+    padding: 80px 24px 64px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(160,99,42,0.06) 3px,
+      rgba(160,99,42,0.06) 4px
+    );
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--sable);
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.1s forwards;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.15;
+    color: var(--blanc);
+    max-width: 720px;
+    margin: 0 auto 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.25s forwards;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--sable);
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    font-weight: 300;
+    color: #c8b090;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.4s forwards;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: var(--vert);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 14px 36px;
+    border-radius: 4px;
+    text-decoration: none;
+    opacity: 0;
+    animation: fadeUp 0.6s ease 0.55s forwards;
+    transition: background 0.2s;
+  }
+  .hero-cta:hover { background: var(--vert-cl); }
+
+  /* ── CHIFFRES ── */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: var(--terre);
+    color: var(--beige);
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    padding: 28px 40px;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.1);
+    flex: 1;
+    min-width: 140px;
+  }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--sable);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #c8b090;
+    margin-top: 4px;
+  }
+
+  /* ── PROMESSE ── */
+  .promise {
+    padding: 72px 24px;
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ocre);
+    margin-bottom: 16px;
+  }
+
+  .promise h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 20px;
+    color: var(--brun);
+  }
+
+  .promise p {
+    font-size: 1rem;
+    color: #5a4030;
+    line-height: 1.75;
+  }
+
+  /* ── MODULES — couches de sol ── */
+  .modules-section {
+    background: var(--beige);
+    padding: 72px 24px;
+  }
+
+  .modules-section > .section-label,
+  .modules-section > h2 {
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .modules-section > h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700;
+    margin-bottom: 48px;
+    color: var(--brun);
+  }
+
+  .soil-stack {
+    max-width: 680px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .soil-layer {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 28px 28px 28px 20px;
+    border-left: 5px solid var(--ocre);
+    background: white;
+    position: relative;
+    transition: box-shadow 0.2s;
+  }
+
+  .soil-layer:not(:last-child) {
+    border-bottom: 2px solid var(--beige);
+  }
+
+  .soil-layer:hover {
+    box-shadow: 4px 0 0 0 var(--vert) inset, 0 2px 12px rgba(0,0,0,0.07);
+    border-left-color: var(--vert);
+  }
+
+  .layer-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--sable);
+    line-height: 1;
+    min-width: 40px;
+    padding-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .layer-content { flex: 1; }
+
+  .layer-tag {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: white;
+    background: var(--ocre);
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+
+  .soil-layer:hover .layer-tag { background: var(--vert); }
+
+  .layer-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--brun);
+    margin-bottom: 6px;
+  }
+
+  .layer-desc {
+    font-size: 0.9rem;
+    color: #6b4e35;
+    line-height: 1.6;
+  }
+
+  .layer-skills {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .skill-chip {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--terre);
+    background: var(--beige);
+    border: 1px solid #d4b88a;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* ── POUR QUI ── */
+  .audience {
+    padding: 72px 24px;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .audience h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 3.5vw, 2rem);
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--brun);
+  }
+
+  .audience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  .audience-card {
+    background: var(--beige);
+    border-top: 3px solid var(--ocre);
+    padding: 24px;
+    border-radius: 2px;
+  }
+
+  .audience-icon {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .audience-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--brun);
+    margin-bottom: 8px;
+  }
+
+  .audience-card p {
+    font-size: 0.88rem;
+    color: #6b4e35;
+    line-height: 1.6;
+  }
+
+  /* ── CTA FINAL ── */
+  .cta-final {
+    background: var(--vert);
+    color: white;
+    padding: 72px 24px;
+    text-align: center;
+  }
+
+  .cta-final h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: #fff;
+  }
+
+  .cta-final p {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.8);
+    max-width: 480px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    background: var(--sable);
+    color: var(--brun);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 16px 44px;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .cta-btn:hover { background: #e8c482; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--brun);
+    color: #8a6a50;
+    text-align: center;
+    font-size: 0.82rem;
+    padding: 24px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 480px) {
+    .stat { padding: 20px 16px; }
+    .soil-layer { flex-direction: column; gap: 8px; }
+    .layer-num { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <p class="hero-eyebrow">Formation en ligne · Agrologie</p>
+  <h1>Comprendre le Sol pour<br><em>Mieux Produire</em></h1>
+  <p class="hero-sub">5 modules pour maîtriser la science du sol — de ses propriétés physiques à la conservation des terres — et prendre de meilleures décisions agricoles.</p>
+  <a href="https://wa.me/message/VCSIN3CLGJRUF1" class="hero-cta">Découvrir la formation</a>
+</header>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-num">5</span>
+    <span class="stat-label">Modules complets</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">15+</span>
+    <span class="stat-label">Chapitres thématiques</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">100%</span>
+    <span class="stat-label">En ligne, à votre rythme</span>
+  </div>
+  <div class="stat">
+    <span class="stat-num">Tout</span>
+    <span class="stat-label">Niveau de départ</span>
+  </div>
+</div>
+
+<!-- PROMESSE -->
+<section class="promise">
+  <p class="section-label">Pourquoi cette formation</p>
+  <h2>Le sol est vivant. Le comprendre, c'est mieux cultiver.</h2>
+  <p>Derrière chaque bonne récolte se cachent des propriétés invisibles : la texture de la terre, sa structure, sa chimie, sa biologie. Cette formation vous donne les clés pour lire un sol, diagnostiquer ses forces et ses limites, et adapter vos pratiques pour produire durablement.</p>
+</section>
+
+<!-- MODULES -->
+<section class="modules-section" id="modules">
+  <p class="section-label">Ce que vous allez apprendre</p>
+  <h2>5 modules, du sol nu à sa conservation</h2>
+
+  <div class="soil-stack">
+
+    <div class="soil-layer">
+      <span class="layer-num">1</span>
+      <div class="layer-content">
+        <span class="layer-tag">Introduction</span>
+        <h3 class="layer-title">Le sol : ce qu'il est et comment il se forme</h3>
+        <p class="layer-desc">Qu'est-ce que le sol exactement ? Comment se forme-t-il ? Quels sont ses grands horizons et ses fonctions essentielles dans les écosystèmes agricoles ?</p>
+        <div class="layer-skills">
+          <span class="skill-chip">Définition du sol</span>
+          <span class="skill-chip">Formation & horizons</span>
+          <span class="skill-chip">Fonctions écologiques</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="soil-layer">
+      <span class="layer-num">2</span>
+      <div class="layer-content">
+        <span class="layer-tag">Propriétés physiques</span>
+        <h3 class="layer-title">Texture, structure et comportement de l'eau</h3>
+        <p class="layer-desc">Pourquoi certains sols s'égouttent trop vite, d'autres étouffent les racines ? Comment identifier un sol sableux, argileux ou limoneux — et en tirer parti ?</p>
+        <div class="layer-skills">
+          <span class="skill-chip">Triangle textural</span>
+          <span class="skill-chip">Structure grumeleuse</span>
+          <span class="skill-chip">Porosité & compaction</span>
+          <span class="skill-chip">Réserve utile en eau</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="soil-layer">
+      <span class="layer-num">3</span>
+      <div class="layer-content">
+        <span class="layer-tag">Propriétés chimiques</span>
+        <h3 class="layer-title">pH, nutriments et capacité d'échange</h3>
+        <p class="layer-desc">Comprendre le pH d'un sol, ses macro et microéléments, et la capacité d'échange cationique pour optimiser la fertilisation et éviter les carences.</p>
+        <div class="layer-skills">
+          <span class="skill-chip">pH & acidité</span>
+          <span class="skill-chip">N, P, K et oligo-éléments</span>
+          <span class="skill-chip">CEC & matière organique</span>
+          <span class="skill-chip">Humus</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="soil-layer">
+      <span class="layer-num">4</span>
+      <div class="layer-content">
+        <span class="layer-tag">Propriétés biologiques</span>
+        <h3 class="layer-title">La vie du sol : bactéries, champignons et vers de terre</h3>
+        <p class="layer-desc">Le sol abrite des milliards d'organismes. Découvrez leur rôle dans le recyclage des nutriments, la fixation d'azote et les associations mycorhiziennes qui boostent les cultures.</p>
+        <div class="layer-skills">
+          <span class="skill-chip">Microflore & macrofaune</span>
+          <span class="skill-chip">Décomposition</span>
+          <span class="skill-chip">Fixation biologique de l'azote</span>
+          <span class="skill-chip">Mycorhizes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="soil-layer">
+      <span class="layer-num">5</span>
+      <div class="layer-content">
+        <span class="layer-tag">Conservation</span>
+        <h3 class="layer-title">Érosion et lutte antiérosive</h3>
+        <p class="layer-desc">Reconnaître les signes d'érosion hydrique et éolienne, identifier les zones à risque, et mettre en place des pratiques concrètes pour protéger ses terres sur le long terme.</p>
+        <div class="layer-skills">
+          <span class="skill-chip">Érosion en nappe & ravines</span>
+          <span class="skill-chip">Saltation & suspension</span>
+          <span class="skill-chip">Haies vives & agroforesterie</span>
+          <span class="skill-chip">Agriculture de conservation</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- POUR QUI -->
+<section class="audience">
+  <h2>Cette formation est faite pour vous si…</h2>
+  <div class="audience-grid">
+    <div class="audience-card">
+      <span class="audience-icon">🌱</span>
+      <h3>Vous cultivez ou élevez</h3>
+      <p>Agriculteur, maraîcher ou éleveur, vous voulez comprendre votre sol pour améliorer vos rendements et réduire vos intrants.</p>
+    </div>
+    <div class="audience-card">
+      <span class="audience-icon">📚</span>
+      <h3>Vous apprenez l'agronomie</h3>
+      <p>Étudiant ou technicien en formation, vous cherchez un contenu structuré, rigoureux et accessible pour asseoir vos bases.</p>
+    </div>
+    <div class="audience-card">
+      <span class="audience-icon">🔍</span>
+      <h3>Vous êtes simplement curieux</h3>
+      <p>Jardinier, passionné d'environnement ou citoyen engagé, vous souhaitez comprendre les enjeux de la santé des sols.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="cta-final">
+  <h2>Prenez soin de votre sol.<br>Il prendra soin de vos cultures.</h2>
+  <p>Une formation complète, progressive et pensée pour tous les profils — du débutant curieux à l'agriculteur expérimenté.</p>
+  <a href="https://wa.me/message/VCSIN3CLGJRUF1" class="cta-btn">Accéder à la formation</a>
+</section>
+
+<footer>
+  <p>Formation <em>Comprendre le Sol pour Mieux Produire</em> · Tous droits réservés</p>
+</footer>
+
+</body>
+</html>
